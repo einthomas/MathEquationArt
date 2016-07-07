@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Math art thingy</title>
+		<style type="text/css">
+			canvas { border: 1px solid black; }
+		</style>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_CHTML"></script>
+	</head>
+	<body onload="draw();">
+		<table style="width:100% text-align:left">
+			<tr>
+				<td>
+					<canvas id="canvas" width="800" height="600"></canvas>
+				</td>
+				<td>
+					<label for="a">a</label>
+					<input id="a" type="range" min="0" max="3.1415" step="0.01" oninput="a = this.value; draw();" />
+					<br />
+					<label for="b">b</label>
+					<input id="b" type="range" min="0" max="3.1415" step="0.01" oninput="b = this.value; draw();" />
+					<br />
+					<label for="c">c</label>
+					<input id="c" type="range" min="0" max="3.1415" step="0.01" oninput="c = this.value; draw();" />
+					<br />
+					<label for="d">d</label>
+					<input id="d" type="range" min="0" max="3.1415" step="0.01" oninput="d = this.value; draw();" />
+					<br />
+					<label for="e">e</label>
+					<input id="e" type="range" min="0" max="3.1415" step="0.01" oninput="e = this.value; draw();" />
+					<br />
+					<label for="f">f</label>
+					<input id="f" type="range" min="0" max="3.1415" step="0.01" oninput="f = this.value; draw();" />
+				</td>
+			</tr>
+		</table>
+		<p>
+			`x_(n+1) = sin(a * y_n) + cos(b * x_n) - cos(c * z_n)` <br />
+			`y_(n+1) = sin(d * x_n) + cos(e * y_n) - cos(f * z_n)` <br />
+			`z_(n+1) = z_n + 0.1`
+		</p>
+		<script>
+			x = y = z = 0;
+			a = Math.random() * Math.PI;
+			b = Math.random() * Math.PI;
+			c = Math.random() * Math.PI;
+			d = Math.random() * Math.PI;
+			e = Math.random() * Math.PI;
+			f = Math.random() * Math.PI;
+
+			function calcX() {
+				x = Math.sin(a * y) + Math.cos(b * x) - Math.cos(c * z);
+			}
+
+			function calcY() {
+				y = Math.sin(d * x) + Math.cos(e * y) - Math.cos(f * z);
+			}
+
+			function calcZ() {
+				z = z + 0.1;
+			}
+
+			function draw() {
+				var canvas = document.getElementById("canvas");
+				if (canvas.getContext) {
+					var context = canvas.getContext("2d"); 
+					context.clearRect(0, 0, canvas.width, canvas.height);
+
+					for (i = 0; i < 10000; i++) {
+						calcX();
+						calcY();
+						calcZ();
+						if (x < 0.0 || y < 0.0 || z < 0.0) {
+							console.log(x + " " + y + " " + z);
+						}
+						context.fillRect(((x + 3.0) / 6.0) * canvas.width, ((y + 3.0) / 6.0) * canvas.height, 1, 1);
+					}
+				} else {
+					alert("Canvas unsupported! Get a decent browser m8!")
+				}
+			}
+		</script>
+	</body>
+</html>
